@@ -41,7 +41,9 @@ class ShowResults(object):
         if all_bookmarks:
             print("*" * 24, "\nAlready bookmarked URLs.\n", "*" * 23)
             for bookmark in all_bookmarks:
-                table.rows.append([bookmark[0], bookmark[1], bookmark[2], bookmark[3], bookmark[4]])
+                table.rows.append(
+                    [bookmark[0], bookmark[1], bookmark[2], bookmark[3], bookmark[4]]
+                )
             print(table)
         else:
             print("No bookmarks found.")

@@ -134,9 +134,13 @@ class DatabaseConnection(object):
         """
         try:
             self.url_id = url_id
-            self.cursor.execute(""" SELECT url FROM bookmarks where id=? """, (self.url_id,))
+            self.cursor.execute(
+                """ SELECT url FROM bookmarks where id=? """, (self.url_id,)
+            )
             deleted_url = self.cursor.fetchone()
-            self.cursor.execute(""" DELETE FROM bookmarks WHERE id=? """, (self.url_id,))
+            self.cursor.execute(
+                """ DELETE FROM bookmarks WHERE id=? """, (self.url_id,)
+            )
             self.db.commit()
             if deleted_url:
                 return True
@@ -151,10 +155,11 @@ class DatabaseConnection(object):
         """
 
         try:
-
             self.url_id = url_id
             self.url = url
-            self.cursor.execute(""" SELECT url FROM bookmarks WHERE id=?""", (self.url_id))
+            self.cursor.execute(
+                """ SELECT url FROM bookmarks WHERE id=?""", (self.url_id)
+            )
             self.cursor.execute(
                 """ UPDATE bookmarks SET url=? WHERE id=?""", (self.url, self.url_id)
             )
@@ -231,7 +236,9 @@ class DatabaseConnection(object):
                 self.db.commit()
                 return True
             else:
-                print("Provide either valid url id or url tag name or any valid substring.")
+                print(
+                    "Provide either valid url id or url tag name or any valid substring."
+                )
 
             if all_row:
                 for i in range(len(all_row)):
@@ -247,7 +254,9 @@ class DatabaseConnection(object):
         Checks this tag is available in database.
         """
         try:
-            self.cursor.execute(""" SELECT url FROM bookmarks WHERE tags=?""", (url_tag,))
+            self.cursor.execute(
+                """ SELECT url FROM bookmarks WHERE tags=?""", (url_tag,)
+            )
             all_row = self.cursor.fetchall()
             self.db.commit()
             if all_row == []:
