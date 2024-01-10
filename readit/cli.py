@@ -20,6 +20,7 @@ import requests  # to check whether url is valid or not
 
 from readit import database  # used to perform database operations.
 from readit import view  # Used to show results to users
+from readit import validate  # used to validate URL
 
 database_connection = database.DatabaseConnection()
 output = view.ShowResults()
@@ -61,20 +62,19 @@ def main(
         for url_to_add in add:
             url = url_to_add
             try:
-                validate_url = requests.get(url)
-                validate_code = validate_url.status_code
-                if validate_code == 200:
+                status_code, error_message = validate.validate_url(url)
+                if status_code == 200:
                     is_url_added = database_connection.add_url(url)
                     if is_url_added:
-                        print("Bookmarked.")
+                        print("Bookmark added.")
                     else:
                         print("URL is already bookmarked. Check URL information. See help")
                 else:
-                    print("*" * 12, "\nInvalid URL\n", "*" * 11)
+                    print(f"Error: {error_message}")
                     if option_yes_no():
                         is_url_added = database_connection.add_url(url)
                         if is_url_added:
-                            print("Bookmarked.")
+                            print("Bookmark added.")
                         else:
                             print("URL is already bookmarked. Check URL information. See help")
             except Exception:
@@ -82,7 +82,7 @@ def main(
                 if option_yes_no():
                     is_url_added = database_connection.add_url(url)
                     if is_url_added:
-                        print("Bookmarked.")
+                        print("Bookmark added.")
                     else:
                         print("URL is already bookmarked. Check URL information. See help")
     elif delete:
